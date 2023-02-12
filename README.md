@@ -1,3 +1,5 @@
+[![PyPI version](https://badge.fury.io/py/s3head.svg)](https://badge.fury.io/py/s3head)
+[![Python Versions](https://img.shields.io/pypi/pyversions/s3head.svg)](https://pypi.org/project/s3head/)
 # s3head
 
 `s3head` is the `head` command for AWS S3.
