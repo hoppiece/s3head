@@ -36,7 +36,13 @@ class LoadS3Config:
 
 @click.command
 @click.argument("uri")
-@click.option("-n", "--num-lines", type=int, default=10, help="lines")
+@click.option(
+    "-n",
+    "--num-lines",
+    type=int,
+    default=10,
+    help="lines. If set to -1, show all lines. (Behavior as `cat`)",
+)
 @click.option("-c", "--count-byte", type=int, help="bytes")
 @click.option("--config", help="Path to the `.s3cfg`")
 def main(uri: str, num_lines: int, count_byte: int, config: str) -> None:
@@ -48,15 +54,21 @@ def main(uri: str, num_lines: int, count_byte: int, config: str) -> None:
     if count_byte:
         raise NotImplementedError("Byte count is not Implemented yet.")
 
-    with open(uri, transport_params=transport_params) as fp:
-        is_break = False
-        for i, line in enumerate(fp):
-            if i > num_lines - 1:
-                is_break = True
-                break
-            print(line, end="")
-        if not is_break:
-            print("")
+    if num_lines == -1:
+        with open(uri, transport_params=transport_params) as fp:
+            for line in fp:
+                print(line, end="")
+        print("")
+    else:
+        with open(uri, transport_params=transport_params) as fp:
+            is_break = False
+            for i, line in enumerate(fp):
+                if i > num_lines - 1:
+                    is_break = True
+                    break
+                print(line, end="")
+            if not is_break:
+                print("")
 
 
 if __name__ == "__main__":
